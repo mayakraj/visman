@@ -6,10 +6,11 @@ Created on Sat Aug  3 16:18:42 2019
 
 Main file running the application.
 """
-import psycopg2, config_parser
-from flask import Flask, request, jsonify
+import psycopg2
+from app import config_parser
+from flask import request, jsonify
 import pandas as pd
-import db_config.dbManager as dbm
+import app.db_config.dbManager as dbm
 import logging
 import random
 from test import app
@@ -69,21 +70,7 @@ def about():
                     'version': 'heroku test development'})
 
 
-@app.route('/society_info', methods=['GET', 'POST'])
-def society_info():
-    """ Gives the society id and society name for all registered society."""
-    try:
-        query = queries['society_info']
 
-        with dbm.dbManager() as manager:
-            result = manager.getDataFrame(query)
-            logging.info(result)
-            logging.info(result.to_dict(orient='records'))
-        return jsonify(result.to_dict(orient='records'))
-
-    except psycopg2.DatabaseError as error:
-        errors = {'society info': False, 'error': error}
-        return str(errors)
 
 
 @app.route('/society_register', methods=['GET', 'POST'])
