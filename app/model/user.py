@@ -1,4 +1,7 @@
 from playhouse.db_url import connect
+from peewee import *
+
+
 
 #from playhouse import PostgresqlExtDatabase
 
@@ -17,7 +20,7 @@ class User(BaseModel):
         schema = 'visitor_management_schema'
         db_table = 'user_table'
 
-    id = IdentityField(generate_always=True)
+    id = IdentityField()
     first_name = CharField()
     middle_name = CharField()
     last_name = CharField()
