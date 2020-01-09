@@ -11,18 +11,12 @@ queries = config_parser.config(filename='db_config/database.ini', section='queri
 api = Blueprint('srv', __name__)
 
 
+@api.route('/', methods=['GET', 'POST'])
+def home():
+    """ Returns home page"""
+    return "This is the home page."
+
 @api.route('/society_info', methods=['GET', 'POST'])
 def society_info():
     """ Gives the society id and society name for all registered society."""
-    try:
-        query = queries['society_info']
-
-        with dbm.dbManager() as manager:
-            result = manager.getDataFrame(query)
-            logging.info(result)
-            logging.info(result.to_dict(orient='records'))
-        return jsonify(result.to_dict(orient='records'))
-
-    except psycopg2.DatabaseError as error:
-        errors = {'society info': False, 'error': error}
-        return str(errors)
+    return "This is for society info"
