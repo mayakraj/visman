@@ -9,3 +9,9 @@ def getuser():
     email = request.form[email]
     user = User.get_user(email)
     return jsonify(user)
+
+
+@api.route('/allusers', methods=['GET', 'POST'])
+def getuser():
+    users = User.select.all()
+    return jsonify(users)
