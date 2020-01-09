@@ -1,4 +1,8 @@
-db = PostgresqlExtDatabase('d5267ba9erjt2u', user='gawsmrxbzfvrmf', password='4e011cd366dd047014b1e42fa8992a6e4eeabc164f21053a37435a8b5ee4b289', host='ec2-54-227-251-33.compute-1.amazonaws.com', port='5432')
+from playhouse.db_url import connect
+
+#from playhouse import PostgresqlExtDatabase
+
+db = connect('postgres://azqkdeiqpezmzj:ee1246a50f9c0d67038106e0557c7eddd05bdd0fda2149d831354388f53d70a9@ec2-54-235-250-38.compute-1.amazonaws.com:5432/d3u39l3sta71kl')
 
 
 class BaseModel(Model):
