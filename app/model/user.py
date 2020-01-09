@@ -1,4 +1,4 @@
-db = PostgresqlExtDatabase('visman', user='postgres', password='changeme', host='localhost', port='5433')
+db = PostgresqlExtDatabase('d5267ba9erjt2u', user='gawsmrxbzfvrmf', password='4e011cd366dd047014b1e42fa8992a6e4eeabc164f21053a37435a8b5ee4b289', host='ec2-54-227-251-33.compute-1.amazonaws.com', port='5432')
 
 
 class BaseModel(Model):
