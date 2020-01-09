@@ -11,5 +11,5 @@ def create_app(config=None):
 def load_blueprints(app):
     from app.srv.routes import api
 
-    app.register_blueprint(app.srv.routes.society_info)
+    app.register_blueprint(srv.routes.api)
 
