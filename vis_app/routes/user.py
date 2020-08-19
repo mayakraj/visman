@@ -1,20 +1,26 @@
-from .utils import auth_user
-from peewee import JOIN
+import psycopg2
+import config_parser
+import logging
 import json
+from functools import wraps
+from peewee import IntegrityError, DoesNotExist, fn
+from flask import Flask, request, jsonify, Blueprint, session, flash, redirect, url_for
+from vis_app.Utils.helper import auth_user
+from peewee import JOIN
+from flask import render_template
+
+#Custom packages
 from vis_app.Models.BaseModel import BaseModel
 from vis_app.Models.BaseModel import db
 from flask_bcrypt import Bcrypt
 from vis_app.Models.Flat import Flat
 from vis_app.Models.Society import Society
 from vis_app.Models.User import User
-from flask import Flask, request, jsonify, Blueprint, session, flash, redirect, url_for
-from functools import wraps
 import db_config.dbManager as dbm
-import logging
-import psycopg2
-import config_parser
-from peewee import IntegrityError, DoesNotExist, fn
-from vis_app.routes.utils import result_to_json, CustResponseSend
+from vis_app.Utils.helper import result_to_json, CustResponseSend,send_mail
+from vis_app.Utils.security import generate_confirmation_token, confirm_token 
+
+
 logging.basicConfig(level=logging.DEBUG)
 
 
@@ -163,6 +169,22 @@ def get_society_members_details():
 
         return CustResponseSend("Error : {}".format(str(error)), False, [])
 
+@user.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+        logging.info('token confirmation done for: {}'.format(email))
+        user = User.get(email=email)
+        user.email_confirmed = True
+
+        user.save()
+        return 'Account is confirmed!!'
+        
+    except Exception as error:
+
+        return CustResponseSend("Error : {}".format(str(error)), False, [])
+  
+#-------------------------------------------Helper function-----------------------------------------------
 
 def create_or_update(data):
     logging.info("In Function create_or_update()")
@@ -201,15 +223,30 @@ def create_or_update(data):
 
             try:
                 logging.info('Saving User details with username:{}'.format(user.username))
-                # logging.info("email: {}, firstname: {}, middlename: {}, lastname:{}, password: {}, isadmin:{}, user_entity: {}".format(
-                #     user.email, user.first_name, user.middle_name, user.last_name, user.password, user.isadmin, user.user_entity))
+                
+                token = generate_confirmation_token(user.email)
+
+                logging.info("token ready: {}".format(token))
+
+                confirm_url = url_for(
+                    'user.confirm_email',
+                    token=token,
+                    _external=True)
+
+                # html = render_template(
+                #     r'vis_app/template/activate.html',
+
+                html = '<p>'+confirm_url+'</p>'
+                send_mail(user.email, html)
                 user.save()
-                logging.info("User saved.")
+                
+                return CustResponseSend("Account confirmation link sent to email  : {}".format(user.email), True, [])
+                
             except Exception as error:
                 logging.info(error)
-                return CustResponseSend("Error : {}".format(str(error)), False, [])
-            user = User.select(User.id, User.username, User.first_name, User.last_name, User.isadmin,).where(User.id == user.id)
-            return result_to_json(user)
+                return CustResponseSend("Sending token to email {} failed with Error : {}".format(user.email,str(error)), False, [])
+            # user = User.select(User.id, User.username, User.first_name, User.last_name, User.isadmin,).where(User.id == user.id)
+            # return result_to_json(user)
 
         except Exception as error:
             logging.info(error)
@@ -238,4 +275,3 @@ def get_user(id):
     except Exception as error:
         logging.info("Function get_user failed with error : {}".format(str(error)))
         return CustResponseSend("Error : {}".format(str(error)), False, [])
-

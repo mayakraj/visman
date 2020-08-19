@@ -2,11 +2,14 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 
 from flask_cors import CORS
+from flask_mail import Mail
 
 #from peewee import PostgresqlDatabase
 
 from flask_bcrypt import Bcrypt
 
+SECRET_KEY = 'vis'
+SECURITY_PASSWORD_SALT = 'vis'
 
 def load_blueprints(app):
     from vis_app.routes.server import server
@@ -26,7 +29,17 @@ def load_blueprints(app):
 
 """Create and return app."""
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret_key'
+app.config['SECRET_KEY'] = SECRET_KEY
+app.config['SECURITY_PASSWORD_SALT'] = SECURITY_PASSWORD_SALT
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'pandeyakshay72@gmail.com'  # enter your email here
+app.config['MAIL_DEFAULT_SENDER'] = 'pandeyakshay72@gmail.com' # enter your email here
+app.config['MAIL_PASSWORD'] = '' # enter your app password here
+
+mail = Mail(app)
+
 CORS(app)
 load_blueprints(app)
 

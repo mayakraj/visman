@@ -1,13 +1,15 @@
-from vis_app.Models.User import User
-from flask import Response, jsonify, session, g
 import pandas as pd
-from vis_app.Models.BaseModel import BaseModel
 import logging
-from vis_app.Models import User
 import json
 from playhouse.shortcuts import model_to_dict
+from flask_mail import Message
+from flask import Response, jsonify, session, g
 
-
+#custom package
+from vis_app.Models.BaseModel import BaseModel
+from vis_app.Models.User import User
+from vis_app.Models import User
+from vis_app import mail,app
 
 def CustResponseSend(message, status, outParams):
     logging.debug("In function send")
@@ -27,7 +29,7 @@ def result_to_json(result):
             result = json.loads(df.to_json(orient='records'))
             logging.info("Fetched result : %s", result)
             logging.debug("Fetched result : {}".format(result))
-            return CustResponseSend(" Successful", True, result)
+            return CustResponseSend("Successful", True, result)
 
     except Exception as error:
         logging.info("result_to_json():{} while fetching result".format(error))
@@ -66,3 +68,19 @@ def auth_user(user):
     session['user'] = user.first_name
     session['username'] = user.username
     logging.info('You are logged in as %s' % (user.username))
+
+
+def send_mail(email,template):
+    try:
+        msg = Message("Email confirmation!!", sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[email])
+        msg.body = template
+        logging.info(template)
+        mail.send(msg)
+
+    except Exception as error:
+        raise error 
+
+
+
+
+    

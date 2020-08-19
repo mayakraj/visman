@@ -4,7 +4,7 @@ import pandas as pd
 import db_config.dbManager as dbm
 import logging
 import config_parser
-from vis_app.routes.utils import result_to_json, CustResponseSend
+from vis_app.Utils.helper import result_to_json, CustResponseSend
 from .user import login_required
 
 logging.basicConfig(level=logging.DEBUG)

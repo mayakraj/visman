@@ -17,3 +17,4 @@
 vis_app/Models/__pycache__/db.cpython-37.pyc
 *.pyc
 .vscode/settings.json
+vis_app/routes/utils copy.py

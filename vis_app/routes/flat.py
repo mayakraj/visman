@@ -5,7 +5,7 @@ import db_config.dbManager as dbm
 import logging
 import psycopg2
 import config_parser
-from vis_app.routes.utils import result_to_json,CustResponseSend
+from vis_app.Utils.helper import result_to_json,CustResponseSend
 from .user import login_required
 
 from vis_app.Models.Flat import Flat

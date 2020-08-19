@@ -18,6 +18,7 @@ class User(BaseModel):
     society_id = ForeignKeyField(Society, null=False, deferrable=True)
     flat_id = ForeignKeyField(Flat, null=False, deferrable=True)
     isadmin = CharField()
+    email_confirmed = CharField()
     user_entity = IntegerField()
     identification_type = CharField()
     identification_no = CharField()
