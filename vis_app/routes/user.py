@@ -74,24 +74,30 @@ def login():
         user = User.select().where(User.email == username).get()
         logging.info("username id %s", user.username)
         logging.info("user password is %s", user.password)
-        if user.password == password:
-            # validate true false
-            query = User.select(User.id, User.username, User.first_name,
-                                User.last_name, User.photo, User.user_entity, User.society_id,
-                                User.isadmin,
-                                User.flat_id, Flat.flat_no, Flat.wing,
-                                Society.society_name).join(
-                Flat, JOIN.LEFT_OUTER
-            ).join(
-                Society, JOIN.LEFT_OUTER
-            ).where(User.id == user.id)
-            auth_user(user)
 
-            return result_to_json(query)
+        if user.email_confirmed:
 
+            if  user.password == password:
+                # validate true false
+                query = User.select(User.id, User.username, User.first_name,
+                                    User.last_name, User.photo, User.user_entity, User.society_id,
+                                    User.isadmin,
+                                    User.flat_id, User.email_confirmed, Flat.flat_no, Flat.wing,
+                                    Society.society_name).join(
+                    Flat, JOIN.LEFT_OUTER
+                ).join(
+                    Society, JOIN.LEFT_OUTER
+                ).where(User.id == user.id)
+                auth_user(user)
+
+                return result_to_json(query)
+
+            else:
+                logging.info("Function login Failed , Password does not mach, for User : %s",username)
+                return CustResponseSend("Login failed: Password does not mach", False, [])
         else:
-            logging.info("Function login Failed , Password does not mach, for User : %s",username)
-            return CustResponseSend("Login failed: Password does not mach", False, [])
+                logging.info("Function login Failed , Please verify email, for User : %s",username)
+                return CustResponseSend("Login failed: Please verify email, for User: {}".format(username), False, [])        
 
     except User.DoesNotExist as error:
         logging.info("Function login Failed , User : %s Does not exist ",username)
@@ -233,23 +239,18 @@ def create_or_update(data):
                     token=token,
                     _external=True)
 
-                # html = render_template(
-                #     r'vis_app/template/activate.html',
-
                 head = "<p>Welcome! Thanks for signing up. Please follow this link to activate your account:</p>"
                 para = "<p><a href='{}'>{}</a></p><br><p>Cheers!</p>".format(confirm_url,confirm_url)
                 
                 html = head + para
                 send_mail(user.email, html)
                 user.save()
-                
-                return CustResponseSend("Account confirmation link sent to email  : {}".format(user.email), True, [])
-                
+                return CustResponseSend("Account confirmation link sent to email  : {}".format(user.email), True,[])
             except Exception as error:
                 logging.info(error)
                 return CustResponseSend("Sending token to email {} failed with Error : {}".format(user.email,str(error)), False, [])
             # user = User.select(User.id, User.username, User.first_name, User.last_name, User.isadmin,).where(User.id == user.id)
-            # return result_to_json(user)
+            # return CustResponseSend("Account confirmation link sent to email  : {}".format(user.email), True, result_to_json(user))
 
         except Exception as error:
             logging.info(error)
