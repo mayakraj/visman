@@ -73,7 +73,7 @@ def auth_user(user):
 def send_mail(email,template):
     try:
         msg = Message("Email confirmation!!", sender=app.config['MAIL_DEFAULT_SENDER'], recipients=[email])
-        msg.body = template
+        msg.html = template
         logging.info(template)
         mail.send(msg)
 
