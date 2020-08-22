@@ -236,9 +236,10 @@ def create_or_update(data):
                 # html = render_template(
                 #     r'vis_app/template/activate.html',
 
-                html = "<p>Welcome! Thanks for signing up. Please follow this link to activate your account:</p>"+
-                "<p><a href='{}'>{}</a></p><br><p>Cheers!</p>".format(confirm_url,confirm_url)
-
+                head = "<p>Welcome! Thanks for signing up. Please follow this link to activate your account:</p>"
+                para = "<p><a href='{}'>{}</a></p><br><p>Cheers!</p>".format(confirm_url,confirm_url)
+                
+                html = head + para
                 send_mail(user.email, html)
                 user.save()
                 
