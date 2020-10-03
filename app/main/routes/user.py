@@ -12,7 +12,8 @@ class UserListApi(Resource):
     def get(self):
         """List all registered users"""
         return get_all_users()
-
+    
+    @marshal_with(user_fields)
     def put(self):
         """Creates a new User """
         args = user_put_args.parse_args()
@@ -20,6 +21,7 @@ class UserListApi(Resource):
         return save_new_user(data=args)
 
 class UserApi(Resource):
+    @marshal_with(user_fields)
     def get(self, public_id):
         """get a user given its identifier"""
         user = get_a_user(public_id)

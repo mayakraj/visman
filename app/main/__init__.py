@@ -17,7 +17,7 @@ CORS(app)
 bcrypt = Bcrypt(app)
 
 # jwt = jwt_manager()
-
+#
 
 @app.errorhandler(400)
 def bad_request(error):
