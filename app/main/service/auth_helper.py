@@ -4,7 +4,7 @@ from flask_restful import abort
 from flask import jsonify
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
-# from ..util.decorator import CustResponseSend
+import json
 
 class Auth:
 
@@ -14,13 +14,20 @@ class Auth:
             # fetch the user data
             user = User.query.filter_by(email=data['username']).first()
             if user and user.check_password(data['password']):
+
+                token = user.encode_auth_token(user.id)
                 expires = timedelta(days=7)
                 print('IN LOGIN______________________')
-                token = create_access_token(identity=str(user.id), expires_delta=expires)
-                response = {'Message':'Login successful','Status':True,'Result':{'token':token,'user':user}}
-                return jsonify(response)
+                # token = create_access_token(identity=str(user.id), expires_delta=expires)
+                response_object = {
+                    'Message':'Login successful',
+                    'Status':True,
+                    'Result': token
+                }
+                return jsonify(response_object)
+                
             else:
-                abort(400,message='User login credentials doesn\'t match')    
+                return {'Message':'User login credentials does not match','Status':False,'Result':[]}
 
         except Exception as e:
             abort(500,message=e)
@@ -28,11 +35,13 @@ class Auth:
     @staticmethod
     def logout_user(data):
         if data:
-            auth_token = data.split(" ")[1]
+            # print(data)
+            auth_token = data#.split(" ")[1]
         else:
             auth_token = ''
         if auth_token:
             resp = User.decode_auth_token(auth_token)
+            print(resp)
             if not isinstance(resp, str):
                 # mark the token as blacklisted
                 return save_token(token=auth_token)

@@ -7,7 +7,7 @@ class LoginAPI(Resource):
     """
          Login Resource
     """
-    @marshal_with(user_fields)
+    # @marshal_with(user_fields)
     def post(self):
         # get the post data
         post_data = request.form.to_dict()

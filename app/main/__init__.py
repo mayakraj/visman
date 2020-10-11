@@ -5,10 +5,11 @@ from flask_cors import CORS
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import jwt_manager
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://azqkdeiqpezmzj:ee1246a50f9c0d67038106e0557c7eddd05bdd0fda2149d831354388f53d70a9@ec2-54-235-250-38.compute-1.amazonaws.com:5432/d3u39l3sta71kl'
+app.config['JWT_SECRET_KEY']  = 'visman#@'
 
 db = SQLAlchemy(app)
 api = Api(app)
@@ -16,8 +17,7 @@ api = Api(app)
 CORS(app)
 bcrypt = Bcrypt(app)
 
-# jwt = jwt_manager()
-#
+jwt = JWTManager(app)
 
 @app.errorhandler(400)
 def bad_request(error):

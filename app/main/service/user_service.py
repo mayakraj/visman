@@ -5,9 +5,7 @@ from app.main import db
 from app.main.models.User import User
 from ..util.helper import abort_if_society_id_doesnt_exist
 from flask_restful import abort
-from ...main.util.decorator import  CustResponseSend
-
-
+from ..util.decorator import CustResponseSend
 
 def save_new_user(data):
     user = User.query.filter_by(email=data['email']).first()
@@ -35,13 +33,12 @@ def generate_token(user):
         # generate the auth token
         auth_token = User.encode_auth_token(user.id)
 
-        print(auth_token)
         response_object = {
             'status': 'success',
             'message': 'Successfully registered.',
             'Authorization': auth_token.decode()
         }
-        return CustResponseSend('Successfully registered.',True,auth_token.decode())
+        return response_object
         # return auth_token.decode(), 201
     except Exception as e:
       
