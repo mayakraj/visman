@@ -52,36 +52,75 @@ user_put_args.add_argument(
 
 
 user_update_args.add_argument(
-    "id", type=str, help="id of the user is required", required=True)
+    "id", type=str, help="id of the user is required", required=False)
 user_update_args.add_argument(
-    "email", type=str, help="email of the user is required", required=True)
+    "email", type=str, help="email of the user is required", required=False)
 user_update_args.add_argument(
-    "username", type=str, help="username of the user is required", required=True)
+    "username", type=str, help="username of the user is required", required=False)
 user_update_args.add_argument(
-    "first_name", type=str, help="first_name of the user is required", required=True)
+    "first_name", type=str, help="first_name of the user is required", required=False)
 user_update_args.add_argument(
-    "middle_name", type=int, help="middle_name of the user", required=False)
+    "middle_name", type=str, help="middle_name of the user", required=False)
 user_update_args.add_argument(
-    "last_name", type=int, help="last_name of the user is required", required=True)
+    "last_name", type=str, help="last_name of the user is required", required=False)
 user_update_args.add_argument(
-    "password", type=int, help="password of the user is required", required=True)
+    "password", type=str, help="password of the user is required", required=False)
 user_update_args.add_argument(
-    "society_id", type=int, help="society_id of the user is required", required=True)
+    "society_id", type=int, help="society_id of the user is required", required=False)
 user_update_args.add_argument(
-    "flat_id", type=int, help="flat_id of the user is required", required=True)
+    "flat_id", type=int, help="flat_id of the user is required", required=False)
 user_update_args.add_argument(
-    "isadmin", type=int, help="isadmin of the user is required", required=True)
+    "isadmin", type=bool, help="isadmin of the user is required", required=False)
 user_update_args.add_argument(
-    "user_entity", type=int, help="user_entity of the user is required", required=True)
+    "user_entity", type=int, help="user_entity of the user is required", required=False)
 user_update_args.add_argument(
-    "email_confirmed", type=int, help="email_confirmed of user is required", required=False)      
+    "email_confirmed", type=bool, help="email_confirmed of user is required", required=False)      
 user_update_args.add_argument(
-    "identification_type", type=int, help="identification_type in the user", required=True)
+    "identification_type", type=str, help="identification_type in the user", required=False)
 user_update_args.add_argument(
-    "identification_no", type=int, help="identification_no the user", required=True)           
+    "identification_no", type=str, help="identification_no the user", required=False)           
 user_update_args.add_argument(
-    "photo", type=int, help="photo of user", required=True)   
+    "photo", type=str, help="photo of user", required=False)   
 
 
 user_get_args.add_argument(
     "id", type=int, help="id of the user is required", required=True)    
+
+
+
+
+society_put_args = reqparse.RequestParser()
+society_put_args.add_argument(
+    "regd_no", type=str, help="Registered number of the society is required", required=True)
+society_put_args.add_argument(
+    "society_name", type=str, help="Name of the society is required", required=True)
+society_put_args.add_argument(
+    "society_address", type=str, help="Address of the society", required=True)
+society_put_args.add_argument(
+    "total_buildings", type=int, help="total buildings in the society", required=True)
+society_put_args.add_argument(
+    "total_flats", type=int, help="total flats in the society", required=True)
+
+society_update_args = reqparse.RequestParser()
+society_update_args.add_argument(
+    "id", type=int, help="id of the society is required", required=True)
+society_update_args.add_argument(
+    "regd_no", type=str, help="Registered number of the society is required", required=False)
+society_update_args.add_argument(
+    "society_name", type=str, help="Name of the society is required", required=False)
+society_update_args.add_argument(
+    "society_address", type=str, help="Address of the society", required=False)
+society_update_args.add_argument(
+    "total_buildings", type=int, help="total buildings in the society", required=False)
+society_update_args.add_argument(
+    "total_flats", type=int, help="total flats in the society", required=False)
+
+
+soc_fields = {
+    'id': fields.Integer,
+    'regd_no': fields.String,
+    'society_name': fields.String,
+    "society_address": fields.String,
+    'total_buildings': fields.Integer,
+    'total_flats': fields.Integer
+}

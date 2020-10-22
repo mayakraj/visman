@@ -7,6 +7,14 @@ class LoginAPI(Resource):
     """
          Login Resource
     """
+    @marshal_with(user_fields)
+    def get(self):
+        # get the login data from token
+        auth_token = request.headers.get('Authorization')
+        user, status = Auth.get_logged_in_user(request)
+        print(user)
+        return user
+
     # @marshal_with(user_fields)
     def post(self):
         # get the post data

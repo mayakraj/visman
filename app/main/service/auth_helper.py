@@ -2,7 +2,7 @@ from app.main.models.User import User
 from ..service.blacklist_service import save_token
 from flask_restful import abort
 from flask import jsonify
-from flask_jwt_extended import create_access_token
+# from flask_jwt_extended import create_access_token
 from datetime import timedelta
 import json
 
@@ -24,6 +24,7 @@ class Auth:
                     'Status':True,
                     'Result': token
                 }
+                
                 return jsonify(response_object)
                 
             else:
@@ -68,17 +69,10 @@ class Auth:
                 user = User.query.filter_by(id=resp).first()
                 response_object = {
                     'status': 'success',
-                    'data': user
+                    'user': user
                 }
-                return response_object, 200
-            response_object = {
-                'status': 'fail',
-                'message': resp
-            }
-            return response_object, 401
+                return response_object
+            abort(401,message= resp)
         else:
-            response_object = {
-                'status': 'fail',
-                'message': 'Provide a valid auth token.'
-            }
-            return response_object, 401
+            abort(401,message= "Provide a valid auth token.")
+            

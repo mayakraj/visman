@@ -10,9 +10,9 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
 
-        data, status = Auth.get_logged_in_user(request)
-        token = data.get('data')
-
+        data = Auth.get_logged_in_user(request)
+        token = data.get('user')
+        status = data.get('status')
         if not token:
             return data, status
 
@@ -25,7 +25,7 @@ def admin_token_required(f):
     def decorated(*args, **kwargs):
 
         data, status = Auth.get_logged_in_user(request)
-        token = data.get('data')
+        token = data.get('user')
 
         if not token:
             return data, status
