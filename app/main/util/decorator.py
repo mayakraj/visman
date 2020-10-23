@@ -64,8 +64,6 @@ def require_api_token(func):
 
     return check_token    
 
-
-
 def _stripNone(data):
     if isinstance(data, dict):
         return {k: _stripNone(v) for k, v in data.items() if k is not None and v is not None and k is not 0 and v is not 0}

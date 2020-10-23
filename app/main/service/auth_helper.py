@@ -17,7 +17,6 @@ class Auth:
 
                 token = user.encode_auth_token(user.id)
                 expires = timedelta(days=7)
-                print('IN LOGIN______________________')
                 # token = create_access_token(identity=str(user.id), expires_delta=expires)
                 response_object = {
                     'Message':'Login successful',

@@ -2,7 +2,6 @@
 from .. import db
 import datetime
 # from app.main.models.blacklist import BlacklistToken
-from ..config import key
 
 
 class Flat(db.Model):
@@ -14,7 +13,7 @@ class Flat(db.Model):
     flat_no = db.Column(db.Integer, nullable=False)
     wing = db.Column(db.String(50), nullable=False)
 
-    society_id = db.Column(db.Integer, db.ForeignKey("society_table.id"), nullable=False)
+    society_id = db.Column(db.Integer,nullable=False)
 
     def __repr__(self):
         return "<Flat '{}'>".format(self.flat_no)

@@ -11,7 +11,7 @@ user_fields = {
     'password': fields.String,
     'society_id': fields.Integer,
     'flat_id': fields.Integer,
-    'isadmin': fields.String,
+    'isadmin': fields.Boolean,
     'email_confirmed': fields.Boolean,
     'user_entity': fields.Integer,
     'identification_type': fields.String,
@@ -19,9 +19,32 @@ user_fields = {
     'photo': fields.String
 }
 
+soc_fields = {
+    'id': fields.Integer,
+    'regd_no': fields.String,
+    'society_name': fields.String,
+    "society_address": fields.String,
+    'total_buildings': fields.Integer,
+    'total_flats': fields.Integer
+}
+
+flat_fields = {
+    'id' : fields.Integer,
+    'flat_no' : fields.Integer,
+    'wing' : fields.String,
+    'society_id' : fields.Integer 
+}
+
 user_put_args = reqparse.RequestParser()
 user_update_args = reqparse.RequestParser()
 user_get_args = reqparse.RequestParser()
+
+society_put_args = reqparse.RequestParser()
+society_update_args = reqparse.RequestParser()
+
+flat_get_args = reqparse.RequestParser()
+flat_put_args = reqparse.RequestParser()
+flat_update_args = reqparse.RequestParser()
 
 
 user_put_args.add_argument(
@@ -39,7 +62,7 @@ user_put_args.add_argument(
 user_put_args.add_argument(
     "flat_id", type=int, help="flat_id of the user is required", required=True)
 user_put_args.add_argument(
-    "isadmin", type=str, help="isadmin of the user is required", required=True)
+    "isadmin", type=bool, help="isadmin of the user is required", required=True)
 user_put_args.add_argument(
     "user_entity", type=int, help="user_entity of the user is required", required=True)
 user_put_args.add_argument(
@@ -50,9 +73,8 @@ user_put_args.add_argument(
     "photo", type=str, help="photo of user", required=False)
 
 
-
 user_update_args.add_argument(
-    "id", type=str, help="id of the user is required", required=False)
+    "id", type=str, help="id of the user is required", required=True)
 user_update_args.add_argument(
     "email", type=str, help="email of the user is required", required=False)
 user_update_args.add_argument(
@@ -87,9 +109,6 @@ user_get_args.add_argument(
     "id", type=int, help="id of the user is required", required=True)    
 
 
-
-
-society_put_args = reqparse.RequestParser()
 society_put_args.add_argument(
     "regd_no", type=str, help="Registered number of the society is required", required=True)
 society_put_args.add_argument(
@@ -101,7 +120,7 @@ society_put_args.add_argument(
 society_put_args.add_argument(
     "total_flats", type=int, help="total flats in the society", required=True)
 
-society_update_args = reqparse.RequestParser()
+
 society_update_args.add_argument(
     "id", type=int, help="id of the society is required", required=True)
 society_update_args.add_argument(
@@ -116,11 +135,18 @@ society_update_args.add_argument(
     "total_flats", type=int, help="total flats in the society", required=False)
 
 
-soc_fields = {
-    'id': fields.Integer,
-    'regd_no': fields.String,
-    'society_name': fields.String,
-    "society_address": fields.String,
-    'total_buildings': fields.Integer,
-    'total_flats': fields.Integer
-}
+flat_put_args.add_argument(
+    "flat_no", type=int, help="Flat number is required", required=True)
+flat_put_args.add_argument(
+    "wing", type=str, help="flat wing is required", required=True)
+flat_put_args.add_argument(
+    "society_id", type=str, help="society id is required", required=True)
+
+
+flat_get_args.add_argument(
+    "society_id", type=str, help="society id is required", required=True)
+flat_get_args.add_argument(
+    "flat_no", type=str, help="flat number is required", required=True)
+flat_get_args.add_argument(
+    "wing", type=str, help="wing is required", required=True)        
+

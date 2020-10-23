@@ -11,6 +11,8 @@ class Society(db.Model):
     society_address = db.Column(db.String(1000), nullable=False)
     total_buildings = db.Column(db.Integer)
     total_flats = db.Column(db.Integer)
+    # flat_details = db.relationship("Flat")
+
 
     # def serialize(self):
     #     """Serialize this object to dict/json."""

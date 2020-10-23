@@ -1,4 +1,5 @@
 from flask_restful import abort
+from app.main import db
 from app.main.models.Society import Society
 
 
@@ -7,3 +8,8 @@ def abort_if_society_id_doesnt_exist(society_id):
     print(result)
     if not result:
         abort(404, message='No society present for this id')
+
+
+def save_changes(data):
+    db.session.add(data)
+    db.session.commit()
