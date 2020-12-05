@@ -21,7 +21,7 @@ class Auth:
                 response_object = {
                     'Message':'Login successful',
                     'Status':True,
-                    'Result': token
+                    'Result': str(token)
                 }
                 
                 return jsonify(response_object)
